@@ -4,6 +4,7 @@ const extension = 'php';
 let userId = 0;
 let firstName = "";
 let lastName = "";
+let currentEditingContact = "";
 let validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 function doLogin()
 {
@@ -187,6 +188,7 @@ function searchContact()
 					let nameString = "";
 					let phoneString = "";
 					let emailString = "";
+					let idString = "";
 
 					let list = document.getElementById("searchContactResults");
 					list.innerHTML = "";
@@ -203,6 +205,7 @@ function searchContact()
 						let colEntry3 = null;
 						let colEntry4 = null;
 						let colEntry5 = null;
+						let btn2 = null;
 
 						// Loop through each JSON object
 						for( let i=0; i<jsonObject.results.length; i++ )
@@ -214,6 +217,7 @@ function searchContact()
 							nameString = currentContact.Name;
 							phoneString = currentContact.Phone;
 							emailString = currentContact.Email;
+							idString = currentContact.ID;
 
 							
 
@@ -232,18 +236,34 @@ function searchContact()
 							colEntry3.innerHTML = phoneString;
 							colEntry3.setAttribute("style", "width:20%");
 
-							/* BUTTON ENTRY SPOT
-							colEntry4 is the edit button, and colEntry5 is the delete button
-							*/
+							// Edit button
 							colEntry4 = document.createElement("td");
-							colEntry4.innerHTML = "EDIT";
 							colEntry4.setAttribute("style", "width:5%");
+							let btn1 = document.createElement("button");
+							btn1.innerHTML = "EDIT";
+							btn1.setAttribute("id", idString);
+							btn1.onclick = function() {
+								document.getElementById("updateBox").hidden = false;
+								editContact(btn1.id);
+							};
+							colEntry4.appendChild(btn1);
 
+							// Delete button
 							colEntry5 = document.createElement("td");
-							colEntry5.innerHTML = "DELETE";
 							colEntry5.setAttribute("style", "width:5%");
-							/* END BUTTON ENTRY SPOT */
+							let btn2 = document.createElement("button");
+							btn2.innerHTML = "DELETE";
+							btn2.setAttribute("id", idString);
+							btn2.onclick = function() {
+								if (confirm("Are you sure you wish to delete this contact?")) {
+									deleteContact(btn2.id);
+								} else {
+									
+								}
+							};
+							colEntry5.appendChild(btn2);
 
+							// Add entries to table
 							rowEntry.appendChild(colEntry1);
 							rowEntry.appendChild(colEntry2);
 							rowEntry.appendChild(colEntry3);
@@ -340,13 +360,9 @@ function RegisterNewUser()
 	}
 }
 
-function deleteContact()
+function deleteContact(contactid)
 {
-	var firstName = document.getElementById("firstName").value;
-	var lastName = document.getElementById("lastName").value;
-  	var pnoneNumber = document.getElementById("pnoneNumber").value;
-
-  	let tmp = {firstName:firstName,firstName:firstName,firstName:firstName, userId:userId};
+  	let tmp = {ID:contactid};
 	let jsonPayload = JSON.stringify( tmp );
 
 
@@ -362,7 +378,7 @@ function deleteContact()
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("contactUpdateResult").innerHTML = "Contact has been deleted";
+				searchContact();
 			}
 		};
 		xhr.send(jsonPayload);
@@ -374,3 +390,40 @@ function deleteContact()
 
 }
 
+function editContact(contactid) {
+	currentEditingContact = contactid;
+}
+
+function executeUpdate() {
+	let newName = document.getElementById("updateFirstName").value + " " + document.getElementById("updateLastName").value;;
+	let newPhone = document.getElementById("updatePhone").value;
+	let newEmail = document.getElementById("updateEmail").value;
+
+	let tmp = {name:newName, phone:newPhone, email:newEmail, GivenID:currentEditingContact};
+	let jsonPayload = JSON.stringify( tmp );
+
+
+	var url = urlBase + '/EditContact.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				document.getElementById("updateBox").hidden = true;
+
+				searchContact();
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("contactUpdateResult").innerHTML = err.message;
+	}
+}
