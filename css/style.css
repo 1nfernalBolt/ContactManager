@@ -123,6 +123,16 @@ header .navbar {
 
 .sidebar .nav-links {
     margin-top: 50px;
+	-moz-column-count:1;
+	-moz-column-gap: 20px;
+	-webkit-column-count: 1;
+	-webkit-column-gap: 20px;
+	column-count:1;
+	column-gap:20px;
+	list-style:none;
+	column-rule-style:none;
+	column-rule-width:0px;
+	column-rule-color:#8d448b;
 }
 
 .sidebar .nav-links li {
@@ -472,7 +482,34 @@ section .page .login input[type="password"]:focus
 	color: #95060a;
   }
   
-
+  /*#myInput {
+	background-image: url('/css/searchicon.png'); // Add a search icon to input 
+	background-position: 10px 12px; /* Position the search icon 
+	background-repeat: no-repeat; /* Do not repeat the icon image 
+	width: 100%; /* Full-width 
+	font-size: 16px; /* Increase font-size 
+	padding: 12px 20px 12px 40px; /* Add some padding 
+	border: 1px solid #ddd; /* Add a grey border 
+	margin-bottom: 12px; /* Add some space below the input 
+  }
+  
+  #searchContactResults {
+	/* Remove default list styling 
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+  }
+  
+  #searchContactResults li a {
+	border: 1px solid #ddd; /* Add a border to all links 
+	margin-top: -1px; /* Prevent double borders 
+	background-color: #f6f6f6; /* Grey background color 
+	padding: 12px; /* Add some padding 
+	text-decoration: none; /* Remove default text underline 
+	font-size: 18px; /* Increase the font-size 
+	color: black; /* Add a black text color 
+	display: block; /* Make it into a block element to fill the whole list 
+  }*/
 
 section .page .login .in
 {
@@ -620,6 +657,25 @@ select {
 }
 .container h1{
 	margin-bottom: 5px;
+}
+
+
+
+ul {
+	-moz-column-count: 5;
+	-moz-column-gap: 40px;
+	-webkit-column-count: 5;
+	-webkit-column-gap: 40px;
+	column-count:5;
+	column-gap:40px;
+	list-style:none;
+	column-rule-style:dashed;
+	column-rule-width:2px;
+	column-rule-color:#8d448b;
+}
+
+table {
+	border-collapse: collapse;
 }
 
 /* Responsive Media Query */
