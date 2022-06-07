@@ -53,12 +53,12 @@
                     <span class="links_name">New Contact</span>
                 </div>
             </li>
-            <li>
+            <!--<li>
                 <div id="help" class="">
                     <i class='fa-question-circle'></i>
                     <span class="links_name">Help</span>
                 </div>
-            </li>
+            </li>-->
         </ul>
     </div>
 
@@ -69,7 +69,7 @@
             <div class="contact-box" >
                 <div class="inner-contact-box box" >
                     <div class="cont-maTable" >
-                      <p>Search your contact here:</p>             
+                      <p>Search your contacts here:</p>             
                     </div>
 
                     <!-- Search  -->
@@ -92,23 +92,22 @@
                             
                 </div>
                 <!-- Side form to update or delete the selected contact  -->
-                <div class="update-box box">
+                <div class="update-box box" id="updateBox" hidden>
                     <div class="container">
                           <label ><b>First Name</b></label>
-                          <input type="text"  placeholder="Enter first name" required>
+                          <input id="updateFirstName" type="text"  placeholder="Enter new first name" required>
                           <label ><b>Last Name</b></label>
-                          <input type="text"placeholder="Enter last name" required>
+                          <input id="updateLastName" type="text"placeholder="Enter new last name" required>
                           <label ><b>Email</b></label>
-                          <input type="text"placeholder="Enter email" required>
+                          <input id="updateEmail" type="text"placeholder="Enter new email" required>
                           <label ><b>Phone Number</b></label>
                           <br>
                           <!--<select name="phoneCode" required>
                               <option selected hidden value="">+1</option>
                               <option value="1">+1</option>
                           </select>-->
-                         <input type="phone" name="phone" placeholder="2311544656" required>                       
-                         <input type="submit" name="sign_up" value="Update Contact" onclick="addContact();" class="addnew">
-                         <input type="submit" name="sign_up" value="Delete Contact" onclick="deleteContact();" class="addnew">
+                         <input id="updatePhone" type="phone" name="phone" placeholder="Enter new phone number" required>                       
+                         <input type="submit" name="sign_up" value="Update Contact" onclick="executeUpdate();" class="addnew">
                          <span id="contactUpdateResult"></span>
                     </div>
                 </div>
@@ -124,8 +123,8 @@
                     <div class="cont-maTable">
                         <form>
                             <div class="container">
-                              <h1>Add New</h1>
-                              <p>Please fill in details for your contact.</p>
+                              <h1>Add New Contact</h1>
+                              <p>Please fill in details for your new contact</p>
                                 <label ><b>First Name</b></label>
                                 <input id= "firstName" type="text"  placeholder="Enter first name" required>
                                 <label ><b>Last Name</b></label>
@@ -138,7 +137,7 @@
                                     <option selected hidden value="">+1</option>
                                     <option value="1">+1</option>
                                 </select>-->
-                               <input id="pnoneNumber" type="phone" name="phone" placeholder="2311544656" required>                       
+                               <input id="pnoneNumber" type="phone" name="phone" placeholder="Enter phone number" required>                       
                                <input type="submit" name="sign_up" value="Add Contact" onclick="addContact();" class="addnew">
                                <span id="contactAddResult"></span>
                                
