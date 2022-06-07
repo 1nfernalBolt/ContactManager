@@ -107,7 +107,7 @@ function readCookie()
 	}
 	else
 	{
-		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+		//document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
 	}
 }
 
@@ -125,10 +125,13 @@ function addContact()
 	let firstName = document.getElementById("firstName").value;
 	let secondName = document.getElementById("secondName").value;
 	let phonenumber = document.getElementById("pnoneNumber").value;
-	
+	let email = document.getElementById("contactemail").value;
 	document.getElementById("contactAddResult").innerHTML = "";
 
-	let tmp = {firstName:firstName, secondName:secondName, phonenumber:phonenumber, userId:userId};
+	let full = firstName.concat(" ");
+	let fullName = full.concat(secondName);
+
+	let tmp = {name:fullName, phone:phonenumber, userId:userId, email:email};
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/AddContact.' + extension;
@@ -156,47 +159,112 @@ function addContact()
 
 function searchContact()
 {
+	// Get search criteria from box
 	let srch = document.getElementById("searchText").value;
-	document.getElementById("contactList").innerHTML = "";
 	
-	let contactList = "";
+	if (srch.length > 0) {
+		// Send stuff to the API
+		let tmp = {search:srch,userId:userId};
+		let jsonPayload = JSON.stringify( tmp );
 
-	let tmp = {search:srch,userId:userId};
-	let jsonPayload = JSON.stringify( tmp );
+		let url = urlBase + '/SearchContacts.' + extension;
 
-	let url = urlBase + '/SearchContacts.' + extension;
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+		// Try to get stuff back from the API
+		try
 		{
-			if (this.readyState == 4 && this.status == 200) 
+			xhr.onreadystatechange = function() 
 			{
-				document.getElementById("contactList").innerHTML = "Contact(s) has been retrieved";
-				let jsonObject = JSON.parse( xhr.responseText );
-				
-				for( let i=0; i<jsonObject.results.length; i++ )
+				if (this.readyState == 4 && this.status == 200) 
 				{
-					contactList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						contactList += "<br />\r\n";
+					// Reset list
+					document.getElementById("contactList").innerHTML = "";
+	
+					let currentContact = "";
+					let nameString = "";
+					let phoneString = "";
+					let emailString = "";
+
+					let list = document.getElementById("searchContactResults");
+					list.innerHTML = "";
+
+					// Get return JSON from API
+					let jsonObject = JSON.parse( xhr.responseText );
+
+					// If the API return is empty, do nothing; otherwise:
+					if (jsonObject.results != null) {	
+
+						let rowEntry = null;
+						let colEntry1 = null;
+						let colEntry2 = null;
+						let colEntry3 = null;
+						let colEntry4 = null;
+						let colEntry5 = null;
+
+						// Loop through each JSON object
+						for( let i=0; i<jsonObject.results.length; i++ )
+						{
+							// Get a single JSON object from array
+							currentContact = jsonObject.results[i];
+							
+							// Populate the arrays with info from the JSON
+							nameString = currentContact.Name;
+							phoneString = currentContact.Phone;
+							emailString = currentContact.Email;
+
+							
+
+							rowEntry = document.createElement("tr");
+							rowEntry.setAttribute("style", "border-bottom:2px dashed plum");
+
+							colEntry1 = document.createElement("td");
+							colEntry1.innerHTML = nameString;
+							colEntry1.setAttribute("style", "width:30%");
+
+							colEntry2 = document.createElement("td");
+							colEntry2.innerHTML = emailString;
+							colEntry2.setAttribute("style", "width:40%");
+
+							colEntry3 = document.createElement("td");
+							colEntry3.innerHTML = phoneString;
+							colEntry3.setAttribute("style", "width:20%");
+
+							/* BUTTON ENTRY SPOT
+							colEntry4 is the edit button, and colEntry5 is the delete button
+							*/
+							colEntry4 = document.createElement("td");
+							colEntry4.innerHTML = "EDIT";
+							colEntry4.setAttribute("style", "width:5%");
+
+							colEntry5 = document.createElement("td");
+							colEntry5.innerHTML = "DELETE";
+							colEntry5.setAttribute("style", "width:5%");
+							/* END BUTTON ENTRY SPOT */
+
+							rowEntry.appendChild(colEntry1);
+							rowEntry.appendChild(colEntry2);
+							rowEntry.appendChild(colEntry3);
+							rowEntry.appendChild(colEntry4);
+							rowEntry.appendChild(colEntry5);
+		
+							list.appendChild(rowEntry)												
+						}
 					}
 				}
-				
-				document.getElementsByTagName("p")[0].innerHTML = contactList;
-			}
-		};
-		xhr.send(jsonPayload);
+			};
+			xhr.send(jsonPayload);
+		}
+		catch(err)
+		{
+			document.getElementById("contactList").innerHTML = err.message;
+		}
+	} else {
+		let list = document.getElementById("searchContactResults");
+		list.innerHTML = "";
 	}
-	catch(err)
-	{
-		document.getElementById("contactList").innerHTML = err.message;
-	}
-	
 }
 
 function RegisterNewUser()
@@ -209,13 +277,13 @@ function RegisterNewUser()
 
 	//input validation
 	if(FirstName == ""){
-		document.getElementById("RegisterResult").innerHTML = "*Required: First Name";
+		document.getElementById("registerResult").innerHTML = "*Required: First Name";
 		return
 
 	}
 
 	if(LastName == ""){
-		document.getElementById("RegisterResult").innerHTML = "*Required: Last Name";
+		document.getElementById("registerResult").innerHTML = "*Required: Last Name";
 		return
 
 	}
@@ -245,7 +313,7 @@ function RegisterNewUser()
  	document.getElementById("RegisterResult").innerHTML = "";
 	var hash = md5(password);
 	
-	let tmp = {userId:userId, FirstName:FirstName, LastName:LastName, LoginId:LoginId, Password:hash};
+	let tmp = {firstName:FirstName, lastName:LastName, login:LoginId, password:hash};
 	let jsonPayload = JSON.stringify( tmp );
 	
 	//name the php file name == AddUsers.php
