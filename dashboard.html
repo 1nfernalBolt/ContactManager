@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css'>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://kit.fontawesome.com/1256cd022a.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="./js/code.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+             readCookie();
+      }, false);
+    </script>
+    
+</head>
+<body>
+    <!-- this is the header section  -->
+    <header> 
+        <div>
+            <h1>TSP</h1> 
+            <p style="color:#ffff; margin: 0;">The Small Project</p>
+        </div>        
+        <nav class="navbar"></nav>
+        <div class="icons">
+            <a href="#" target="_blank">
+                <div class="icons">
+                    <div class="fa fa-sign-out"></div>
+                </div>
+                
+            </a>
+            
+        </div>
+    </header>
+
+    <!-- This is the side menu section  -->
+    <div class="sidebar">
+        <ul class="nav-links">
+            <li>
+                <div id="home" class="active">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Dashboard</span>
+                </div>
+            </li>
+            <li>
+                <div id="addnew" class="">
+                    <i class='bx bx-box'></i>
+                    <span class="links_name">New Contact</span>
+                </div>
+            </li>
+            <li>
+                <div id="help" class="">
+                    <i class='fa-question-circle'></i>
+                    <span class="links_name">Help</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Dashboard: The first link page of the side menu  -->
+    <section class="home-section" id="all-contacts">
+        <div class="home-content" id="dashboard" class="tabcontent">
+       
+            <div class="contact-box" >
+                <div class="inner-contact-box box" >
+                    <div class="cont-maTable" >
+                      <p>Search your contact here:</p>             
+                    </div>
+
+                    <!-- Search  -->
+                    <div class="search-box">
+                        <input id="searchText" onkeyup="searchContact()" type="text" placeholder="Search contact..." type="text">
+                        <i class='bx bx-search'></i>
+                    </div>
+
+                    <!-- Search results will e displayed here  -->
+                    <!-- TODO: Display the results in a selectable table  -->
+                    <div class="container">
+                        <h1 style="margin-bottom: 15px;">Contacts</h1>
+                        <!--<span>Name | Phone Number | Email</span> <br />-->
+                        <!--<input type="text" id="myInput" onkeyup="searchContact()" placeholder="Search for names..">-->
+
+                        <table id="searchContactResults">
+                        </table>>
+                        <p id="contactList"></p><br />
+                    </div>
+                            
+                </div>
+                <!-- Side form to update or delete the selected contact  -->
+                <div class="update-box box">
+                    <div class="container">
+                          <label ><b>First Name</b></label>
+                          <input type="text"  placeholder="Enter first name" required>
+                          <label ><b>Last Name</b></label>
+                          <input type="text"placeholder="Enter last name" required>
+                          <label ><b>Email</b></label>
+                          <input type="text"placeholder="Enter email" required>
+                          <label ><b>Phone Number</b></label>
+                          <br>
+                          <!--<select name="phoneCode" required>
+                              <option selected hidden value="">+1</option>
+                              <option value="1">+1</option>
+                          </select>-->
+                         <input type="phone" name="phone" placeholder="2311544656" required>                       
+                         <input type="submit" name="sign_up" value="Update Contact" onclick="addContact();" class="addnew">
+                         <input type="submit" name="sign_up" value="Delete Contact" onclick="deleteContact();" class="addnew">
+                         <span id="contactUpdateResult"></span>
+                    </div>
+                </div>
+                   
+    </section>
+
+    <!-- Add New Contact page  -->
+    <section class="home-section" id="add-contact">
+           <div class="home-content" id="dashboard" class="tabcontent">
+       
+            <div class="contact-box">
+                <div class="inner-contact-box box">
+                    <div class="cont-maTable">
+                        <form>
+                            <div class="container">
+                              <h1>Add New</h1>
+                              <p>Please fill in details for your contact.</p>
+                                <label ><b>First Name</b></label>
+                                <input id= "firstName" type="text"  placeholder="Enter first name" required>
+                                <label ><b>Last Name</b></label>
+                                <input id="secondName" type="text"placeholder="Enter last name" required>
+                                <label ><b>Email</b></label>
+                                <input id="contactemail" type="text"placeholder="Enter email" required>
+                                <label ><b>Phone Number</b></label>
+                                <br>
+                                <!--<select name="phoneCode" required>
+                                    <option selected hidden value="">+1</option>
+                                    <option value="1">+1</option>
+                                </select>-->
+                               <input id="pnoneNumber" type="phone" name="phone" placeholder="2311544656" required>                       
+                               <input type="submit" name="sign_up" value="Add Contact" onclick="addContact();" class="addnew">
+                               <span id="contactAddResult"></span>
+                               
+                            </div>
+                          </form>             
+                    </div>
+                </div>
+    </section>
+</body>
+
+
+<!-- js to switch the navbar  -->
+<script>
+    $(function () {
+            $('#home').click(function () {
+                $('#all-contacts').css("display", "block");
+                document.getElementById("home").className = "active";
+                $('#add-contact').css("display", "none");
+                document.getElementById("addnew").className = "";
+                
+            });
+
+            $('#addnew').click(function () {
+                $('#all-contacts').css("display", "none");
+                document.getElementById("home").className = "";
+                $('#add-contact').css("display", "block");
+                document.getElementById("addnew").className = "active";
+                
+            });
+
+        });
+
+
+
+</script>
+</html>
