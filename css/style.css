@@ -40,7 +40,7 @@ header {
 }
 
 header .icons div {
-    color: #13131a;
+    color: #0000ff;
     font-size: 2.5rem;
     margin-left: 2rem;
 }
@@ -676,6 +676,10 @@ ul {
 
 table {
 	border-collapse: collapse;
+}
+
+button:hover {
+	background-color: plum;
 }
 
 /* Responsive Media Query */
