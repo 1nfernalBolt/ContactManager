@@ -40,13 +40,13 @@ header {
 }
 
 header .icons div {
-    color: #0000ff;
+    color:#8d448b;
     font-size: 2.5rem;
     margin-left: 2rem;
 }
 
 header .icons div:hover {
-    color: #61b8a2;
+    color: plum;
 }
 
 .search-box {
